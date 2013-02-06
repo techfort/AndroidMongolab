@@ -60,7 +60,7 @@ public class MongoLabDB {
 		MongoLabCollection(String db, String apikey, String collection){
 			this.collection = collection;
 			client = new MongoLabHttpClient();
-			collectionUrl = URL + "databases/" + database + "/collections/" + collection;
+			collectionUrl = URL + "databases/" + database + "/collections/" + this.collection;
 		}
 		
 		public JSONArray listDocuments(){
@@ -71,6 +71,14 @@ public class MongoLabDB {
 			return toJsonObject( client.get( collectionUrl + "/" + id + "?apiKey=" + apiKey ) );
 		}
 		
+		public JSONArray find(String query){
+			return toJsonArray( client.get( collectionUrl + "/?" + query + "&apiKey=" + apiKey) );
+		}
+		
+		// no need to specify fo=true
+		public JSONObject findOne(String query){		
+			return toJsonObject( client.get( collectionUrl + "/?" + query + "&fo=true&apiKey=" + apiKey) );
+		}
 		
 	}
 }
