@@ -19,12 +19,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
 public class MongoLabHttpClient {
 
 	private String baseUrl;
 	private HttpClient client;
+	
+	public MongoLabHttpClient(){
+		client = new DefaultHttpClient();
+	}
 	
 	private HttpResponse execute(HttpUriRequest request){
 		try {
@@ -59,15 +64,11 @@ public class MongoLabHttpClient {
 		return null;
 	}
 	
-	public String get(String url, String query){
-		String requestUrl = url + query; 
-		HttpGet getRequest = new HttpGet(requestUrl.trim());
+	public String get(String url){ 
+		HttpGet getRequest = new HttpGet(url.trim());
 		return read( execute(getRequest) );
 	}
-	
-	public String getAll(String url){
-		return get(url, "");
-	}
+
 	
 	public String post(String url, List<NameValuePair> params) throws UnsupportedEncodingException{
 		HttpPost postRequest = new HttpPost(url);
